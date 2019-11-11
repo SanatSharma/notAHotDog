@@ -1,6 +1,7 @@
 import torch
 from torchvision import transforms, utils
 from torch.utils.data import Dataset, DataLoader
+from torch.utils.data.sampler import SubsetRandomSampler
 from utils import *
 import numpy as np
 from PIL import Image
@@ -26,7 +27,9 @@ class NSFWDataset(Dataset):
             idx = idx.tolist()
         
         img = Image.open(self.indexer.get_object(idx))
-        #img = self.transform(img)
+        # Transform to make every image the same size for the neural net
+        # Inception v3 needs a [3,299,299] image input
+        img = self.transform(img)
         label = self.labels[idx]
         
         return (img, label)
@@ -36,10 +39,12 @@ class NSFWDataset(Dataset):
         # TODO: Slow to append every time. Should I just loop through and get the length in one go?
         for nsfw_dir in self.nsfw_dirs:
             files = [os.path.join(nsfw_dir, p) for p in sorted(os.listdir(nsfw_dir))]
+            print(nsfw_dir, len(files))
             for file in files:
                 self.indexer.get_index(file)
                 labels.append(1)
         
+        print(self.neutral_dir)
         files = [os.path.join(self.neutral_dir, p) for p in sorted(os.listdir(self.neutral_dir))]
         for file in files:
             self.indexer.get_index(file)
@@ -48,6 +53,28 @@ class NSFWDataset(Dataset):
         return np.array(labels)
 
         
+def create_nsfw_dataset(nsfw_path, neutral_path, args, test_split=.2, shuffle=True):
+    
+    print("Creating nsfw dataset")
+    dataset = NSFWDataset(nsfw_path, neutral_path)
+    # Creating data indices for training and validation splits:
+    dataset_size = len(dataset)
+    indices = list(range(dataset_size))
+    split = int(np.floor(test_split * dataset_size))
+    if shuffle :
+        #np.random.seed(random_seed)
+        np.random.shuffle(indices)
+    train_indices, val_indices = indices[split:], indices[:split]
 
+    # Creating PT data samplers and loaders:
+    train_sampler = SubsetRandomSampler(train_indices)
+    valid_sampler = SubsetRandomSampler(val_indices)
 
-        
+    print(len(train_sampler), len(valid_sampler))
+
+    train_loader = torch.utils.data.DataLoader(dataset, batch_size=args.batch_size, 
+                                            sampler=train_sampler)
+    test_loader = torch.utils.data.DataLoader(dataset, batch_size=args.test_batch_size,
+                                                sampler=valid_sampler)
+
+    return train_loader, test_loader
