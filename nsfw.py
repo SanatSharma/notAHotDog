@@ -19,26 +19,13 @@ def arg_parse():
 def main_handler(args):
     if args.model == 'inceptionv3':
         print("Using Inception V3 model")
-        dataset = NSFWDataset(args.nsfw_path, args.neutral_data_path)
-        
-        fig = plt.figure()
+        train_data, test_data = create_nsfw_dataset(args.nsfw_path, args.neutral_data_path, args)
+        print(len(train_data), len(test_data))
 
-        for i in range(len(dataset)):
-            sample = dataset[i]
-
-            #print(i, sample[0].shape)
-            print(sample[1])
-
-            ax = plt.subplot(1, 4, i + 1)
-            plt.tight_layout()
-            ax.set_title('Sample #{}'.format(i))
-            ax.axis('off')
-            ax.imshow(sample[0])
-
-            if i == 3:
-                plt.show()
-                break
-
+        print("Training")
+        trained_model = train_network(train_data, args)
+        print("Evaluating")
+        trained_model.evaluate(test_data)
 
 if __name__ == '__main__':
     args = arg_parse()
