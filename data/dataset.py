@@ -27,6 +27,9 @@ class NSFWDataset(Dataset):
             idx = idx.tolist()
         
         img = Image.open(self.indexer.get_object(idx))
+        # If greyscale, convert to RGB
+        if img.getbands()[0] == 'P' or img.getbands()[0] == 'L':
+            img = img.convert('RGB')
         # Transform to make every image the same size for the neural net
         # Inception v3 needs a [3,299,299] image input
         img = self.transform(img)
@@ -70,7 +73,7 @@ def create_nsfw_dataset(nsfw_path, neutral_path, args, test_split=.2, shuffle=Tr
     train_sampler = SubsetRandomSampler(train_indices)
     valid_sampler = SubsetRandomSampler(val_indices)
 
-    print(len(train_sampler), len(valid_sampler))
+    #print(len(train_sampler), len(valid_sampler))
 
     train_loader = torch.utils.data.DataLoader(dataset, batch_size=args.batch_size, 
                                             sampler=train_sampler)

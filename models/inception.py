@@ -13,14 +13,14 @@ class InceptionV3(nn.Module):
         super(InceptionV3,self).__init__()
         self.inception = models.inception_v3(pretrained=True)
         self.output_size = output_size
-        self.fully_connected = nn.Linear(100, self.output_size)
+        self.fully_connected = nn.Linear(1000, self.output_size)
         self.init_weights()
     
     def init_weights(self):
         nn.init.xavier_normal_(self.fully_connected.weight)
     
     def forward(self, input):     
-        intermediate = self.inception(input)
+        intermediate, _ = self.inception(input)
         labels = self.fully_connected(intermediate)
         probs = F.log_softmax(labels, dim=1)
         return probs
@@ -36,14 +36,15 @@ def train_network(train_data, args):
         print("Epoch:", i)
         epoch_loss = 0
 
-        for idx, data in tqdm(enumerate(train_data)):
+        for idx, data in tqdm(enumerate(train_data), total=len(train_data)):
             inputs, labels = data
             inputs, labels = inputs.to(device), labels.to(device)
-            print(inputs.shape, labels.shape)
+            #print(inputs.shape, labels.shape)
             optimizer.zero_grad()
 
             probs = model.forward(inputs)
-            loss = loss_function(probs.to(device), labels)
+            #print(probs)
+            loss = loss_function(probs.to(device), labels.type(torch.LongTensor))
             epoch_loss += loss
             loss.backward()
             optimizer.step()
@@ -63,7 +64,7 @@ class Trained_Model:
         self.model.eval()
         for idx, data in tqdm(enumerate(test_data)):
             inputs, labels = data
-            inputs, labels = inputs.to(device), labels.to(device)
+            inputs, labels = inputs.to(device), (labels.to(device)).type(torch.LongTensor)
 
             probs = self.model.forward(inputs)
             
