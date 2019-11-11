@@ -40,3 +40,4 @@ class Indexer(object):
 def add_dataset_features(feats, feature_indexer):
     for i in range(len(feats)):
         feature_indexer.get_index(feats[i][0])
+

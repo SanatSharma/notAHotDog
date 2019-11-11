@@ -1,2 +1,4 @@
 *.jpg
 *.jpeg
+__pycache__
+models/__pycache__
