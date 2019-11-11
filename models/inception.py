@@ -10,8 +10,8 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 class InceptionV3(nn.Module):
     def __init__(self, output_size=2):
-        
-        self.inception = models.inception_v3(pretrained=True).to(device)
+        super(InceptionV3,self).__init__()
+        self.inception = models.inception_v3(pretrained=True)
         self.output_size = output_size
         self.fully_connected = nn.Linear(100, self.output_size)
         self.init_weights()
@@ -25,7 +25,7 @@ class InceptionV3(nn.Module):
         probs = F.log_softmax(labels, dim=1)
         return probs
 
-def train_network(train_data, dev_data, args):
+def train_network(train_data, args):
     model = InceptionV3().to(device)
     optimizer = Adam(model.parameters(), args.lr)
     loss_function = nn.NLLLoss()
@@ -36,9 +36,10 @@ def train_network(train_data, dev_data, args):
         print("Epoch:", i)
         epoch_loss = 0
 
-        for idx, data in enumerate(train_data):
+        for idx, data in tqdm(enumerate(train_data)):
             inputs, labels = data
             inputs, labels = inputs.to(device), labels.to(device)
+            print(inputs.shape, labels.shape)
             optimizer.zero_grad()
 
             probs = model.forward(inputs)
@@ -49,4 +50,33 @@ def train_network(train_data, dev_data, args):
 
         print("Epoch loss", epoch_loss)
 
+    # Return trained model
+    return Trained_Model(model)
 
+class Trained_Model:
+    def __init__(self, model):
+        self.model = model
+    
+    def evaluate(test_data):
+        correct, nsfw_correct, false_positive, false_negative, total = 0,0,0,0, len(test_data)
+
+        self.model.eval()
+        for idx, data in tqdm(enumerate(test_data)):
+            inputs, labels = data
+            inputs, labels = inputs.to(device), labels.to(device)
+
+            probs = self.model.forward(inputs)
+            
+            for i in range(len(probs)):
+                if probs[i] == labels[i]:
+                    if probs[i] == 1:
+                        nsfw_correct += 1
+                    correct +=1
+                elif labels[i] == 1:
+                    false_negative+=1
+                else:
+                    false_positive+=1
+
+        print("Correctness", str(correct) + "/" + str(total) + ": " + str(round(correct/total, 5)))
+        print("Precision nsfw", str(nsfw_correct) + "/" + str(false_positive + nsfw_correct) + ": " + str(round(nsfw_correct/(false_positive + nsfw_correct), 5)))
+        print("Recall nsfw", str(nsfw_correct) + "/" + str(nsfw_correct + false_negative) + ": " + str(round(nsfw_correct/nsfw_correct + false_negative, 5)))
