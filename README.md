@@ -13,6 +13,11 @@ or
 tr -d '\r' < filewithcarriagereturns > filewithoutcarriagereturns
 ```
 
+To install all required packages, run
+```
+pip install -r requirements.txt
+```
+
 Main file is ```nsfw.py```
 
 We utilize InceptionV3 model trained on Imagenet as our base model for classification.
