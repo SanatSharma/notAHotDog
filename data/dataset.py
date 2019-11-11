@@ -1,11 +1,12 @@
 import torch
 from torchvision import transforms, utils
-from torch.utils.data import DataSet, DataLoader
+from torch.utils.data import Dataset, DataLoader
 from utils import *
 import numpy as np
-from PIL import image
+from PIL import Image
+import os
 
-class NSFWDataset(DataSet):
+class NSFWDataset(Dataset):
     def __init__(self, data_path_nsfw, data_path_neutral):
         self.transform = transforms.Compose(
                             [transforms.RandomResizedCrop(299), 
@@ -15,7 +16,7 @@ class NSFWDataset(DataSet):
         self.nsfw_dirs = data_path_nsfw
         self.neutral_dir = data_path_neutral   
         self.indexer = Indexer()        
-        self.labels = create_dataset()
+        self.labels = self.create_dataset()
 
     def __len__(self):
         return len(self.indexer)
@@ -23,12 +24,12 @@ class NSFWDataset(DataSet):
     def __getitem__(self, idx):
         if torch.is_tensor(idx):
             idx = idx.tolist()
-
-        img = image.open(self.indexer.get_object(idx))
-        img = self.transform(img)
+        
+        img = Image.open(self.indexer.get_object(idx))
+        #img = self.transform(img)
         label = self.labels[idx]
         
-        return (image, label)
+        return (img, label)
 
     def create_dataset(self):
         labels = []
