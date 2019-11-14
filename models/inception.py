@@ -62,7 +62,7 @@ class Trained_Model:
         correct, nsfw_correct, false_positive, false_negative, total = 0,0,0,0, len(test_data)
 
         self.model.eval()
-        for idx, data in tqdm(enumerate(test_data)):
+        for idx, data in tqdm(enumerate(test_data), total=len(test_data)):
             inputs, labels = data
             inputs, labels = inputs.to(device), (labels.to(device)).type(torch.LongTensor)
 
