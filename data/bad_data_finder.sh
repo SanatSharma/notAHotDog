@@ -15,9 +15,13 @@ do
 	images_dir="$raw_data_dir/$cname/IMAGES"
     echo $images_dir
     duplicate_file="$raw_data_dir/$cname/bad_$cname.txt"
+    test="s.txt"
     echo $duplicate_file
-    sleep 5
-    find $images_dir -name "*.jpg" -type 'f' -size -504c > $duplicate_file
+    echo $temp
+    cd $images_dir
+    find . -name "*.jpg" -type 'f' -size -504c > $duplicate_file
+    sed 's/^.//' $duplicate_file > $test
+    mv $test $duplicate_file
     echo "Class: $cname. Total duplicates found : $(cat $duplicate_file | wc -l)"
     
 done
