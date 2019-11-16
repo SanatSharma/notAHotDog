@@ -48,8 +48,8 @@ class NSFWDataset(Dataset):
                 self.indexer.get_index(file)
                 labels.append(1)
         
-        print(self.neutral_dir)
         files = [os.path.join(self.neutral_dir, p) for p in sorted(os.listdir(self.neutral_dir))]
+        print(self.neutral_dir, len(files))
         for file in files:
             self.indexer.get_index(file)
             labels.append(0)

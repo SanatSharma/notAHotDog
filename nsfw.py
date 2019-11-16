@@ -13,7 +13,7 @@ def arg_parse():
     parser.add_argument('--lr', type=float, default=0.001, help="learning rate for optimizer")
     parser.add_argument('--batch_size', type=int, default=32, help='Batch size for training')
     parser.add_argument('--test_batch_size', type=int, default=8, help='Batch size for testing')
-    parser.add_argument('--model_path', type=str, default="model/trained.pt", help='Path to save trained model')
+    parser.add_argument('--model_path', type=str, default="models/trained.pt", help='Path to save trained model')
 
     args = parser.parse_args()
     return args
@@ -30,10 +30,6 @@ def main_handler(args):
         trained_model.evaluate(test_data)
         model = trained_model.model
         
-        if not os.path.exists(args.model_path):
-                f=open(args.model_path, 'w')
-                f.close()
-
         torch.save(model.state_dict(), args.model_path)
 
         # Print model's state_dict
