@@ -69,14 +69,15 @@ class Trained_Model:
             inputs, labels = data
             inputs, labels = inputs.to(device), labels.type(torch.LongTensor).to(device)
 
-            probs = self.model.forward(inputs)
+            probs = self.model.forward(inputs, train=False)
             
             for i in range(len(probs)):
-                if probs[i] == labels[i]:
-                    if probs[i] == 1:
+                val = torch.argmax(probs[i]).item()
+                if val == labels[i].item():
+                    if val == 1:
                         nsfw_correct += 1
                     correct +=1
-                elif labels[i] == 1:
+                elif labels[i].item() == 1:
                     false_negative+=1
                 else:
                     false_positive+=1
