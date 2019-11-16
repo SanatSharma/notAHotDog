@@ -1,6 +1,7 @@
 import argparse
 from models.inception import *
 from data.dataset import *
+import os
 import matplotlib.pyplot as plt
 
 def arg_parse():
@@ -29,6 +30,10 @@ def main_handler(args):
         trained_model.evaluate(test_data)
         model = trained_model.model
         
+        if not os.path.exists(args.model_path):
+                f=open(args.model_path, 'w')
+                f.close()
+
         torch.save(model.state_dict(), args.model_path)
 
         # Print model's state_dict

@@ -62,7 +62,7 @@ class Trained_Model:
         self.model = model
     
     def evaluate(self, test_data):
-        correct, nsfw_correct, false_positive, false_negative, total = 0,0,0,0, len(test_data)
+        correct, nsfw_correct, false_positive, false_negative, total = 0,0,0,0,0
 
         self.model.eval()
         for idx, data in tqdm(enumerate(test_data), total=len(test_data)):
@@ -81,6 +81,7 @@ class Trained_Model:
                     false_negative+=1
                 else:
                     false_positive+=1
+                total+=1
 
         print("Correctness", str(correct) + "/" + str(total) + ": " + str(round(correct/total, 5)))
         print("Precision nsfw", str(nsfw_correct) + "/" + str(false_positive + nsfw_correct) + ": " + str(round(nsfw_correct/(false_positive + nsfw_correct), 5)))
