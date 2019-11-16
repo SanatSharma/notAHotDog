@@ -44,7 +44,7 @@ def train_network(train_data, args):
 
             probs = model.forward(inputs)
             #print(probs)
-            loss = loss_function(probs.to(device), labels.type(torch.LongTensor))
+            loss = loss_function(probs.to(device), labels.type(torch.LongTensor).to(device))
             epoch_loss += loss
             loss.backward()
             optimizer.step()
@@ -64,7 +64,7 @@ class Trained_Model:
         self.model.eval()
         for idx, data in tqdm(enumerate(test_data), total=len(test_data)):
             inputs, labels = data
-            inputs, labels = inputs.to(device), (labels.to(device)).type(torch.LongTensor)
+            inputs, labels = inputs.to(device), labels.type(torch.LongTensor).to(device)
 
             probs = self.model.forward(inputs)
             
