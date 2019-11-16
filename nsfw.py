@@ -12,6 +12,7 @@ def arg_parse():
     parser.add_argument('--lr', type=float, default=0.001, help="learning rate for optimizer")
     parser.add_argument('--batch_size', type=int, default=32, help='Batch size for training')
     parser.add_argument('--test_batch_size', type=int, default=8, help='Batch size for testing')
+    parser.add_argument('--model_path', type=str, default="model/trained.pt", help='Path to save trained model')
 
     args = parser.parse_args()
     return args
@@ -26,6 +27,14 @@ def main_handler(args):
         trained_model = train_network(train_data, args)
         print("Evaluating")
         trained_model.evaluate(test_data)
+        model = trained_model.model
+        
+        torch.save(model.state_dict(), args.model_path)
+
+        # Print model's state_dict
+        print("Model's state_dict:")
+        for param_tensor in model.state_dict():
+                print(param_tensor, "\t", model.state_dict()[param_tensor].size())
 
 if __name__ == '__main__':
     args = arg_parse()
