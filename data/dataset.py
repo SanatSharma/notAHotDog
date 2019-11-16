@@ -28,13 +28,14 @@ class NSFWDataset(Dataset):
         
         img = Image.open(self.indexer.get_object(idx))
         # If greyscale, convert to RGB
-        if img.getbands()[0] == 'P' or img.getbands()[0] == 'L':
+        if img.getbands()[0] == 'P' or img.getbands()[0] == 'L' or img.getbands()[-1] == "A":
+            #print(img.getbands())
             img = img.convert('RGB')
+
         # Transform to make every image the same size for the neural net
         # Inception v3 needs a [3,299,299] image input
         img = self.transform(img)
         label = self.labels[idx]
-        
         return (img, label)
 
     def create_dataset(self):
@@ -52,6 +53,7 @@ class NSFWDataset(Dataset):
         for file in files:
             self.indexer.get_index(file)
             labels.append(0)
+        print("Dataset size:", len(labels))
 
         return np.array(labels)
 
