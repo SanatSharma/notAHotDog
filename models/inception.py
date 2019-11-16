@@ -58,7 +58,7 @@ class Trained_Model:
     def __init__(self, model):
         self.model = model
     
-    def evaluate(test_data):
+    def evaluate(self, test_data):
         correct, nsfw_correct, false_positive, false_negative, total = 0,0,0,0, len(test_data)
 
         self.model.eval()
