@@ -19,8 +19,11 @@ class InceptionV3(nn.Module):
     def init_weights(self):
         nn.init.xavier_normal_(self.fully_connected.weight)
     
-    def forward(self, input):     
-        intermediate, _ = self.inception(input)
+    def forward(self, input, train=True): 
+        if train:
+            intermediate, _ = self.inception(input)
+        else:
+            intermediate = self.inception(input)
         labels = self.fully_connected(intermediate)
         probs = F.log_softmax(labels, dim=1)
         return probs
