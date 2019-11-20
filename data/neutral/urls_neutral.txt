@@ -8203,9 +8203,7 @@ http://media.iwm.org.uk/ciim5/39/945/large_000000.jpg
 http://media.iwm.org.uk/ciim5/9/703/large_000000.jpg
 http://mfrost.typepad.com/photos/uncategorized/2009/02/10/koalacuteness12.jpg
 http://ngm.nationalgeographic.com/wallpaper/img/2009/11/nov09wallpaper-4_1600.jpg
-http://orig00.deviantart.net/f4aa/f/2016/164/b/a/canyonlands_river_view_by_bawwomick-da64y9t.jpg
 http://orig02.deviantart.net/e697/f/2010/109/0/9/fallen_ship___speed_painting_by_jamga.jpg
-http://orig03.deviantart.net/6a56/f/2016/167/a/3/hills_of_artist_s_pallet_by_bawwomick-da6hhp0.jpg
 http://orig09.deviantart.net/cc7c/f/2015/309/f/a/travelling_man__1_of_3__by_deniskom-d9fm0jo.jpg
 http://pbs.twimg.com/media/BreVVZLIYAA4z8y.jpg
 http://pcdn.500px.net/6539831/4a28bc0ffd175f9192d48950c4c707a5c1a3e3f1/4.jpg
@@ -8748,7 +8746,6 @@ https://farm8.staticflickr.com/7129/8168096570_9d3c1f405f_o.jpg
 https://farm8.staticflickr.com/7401/16339408217_98ea4ce1d9_b.jpg
 https://farm8.staticflickr.com/7519/15658898187_4cf50cbd0c_b.jpg
 https://farm8.staticflickr.com/7922/31500119567_19534da346_o.jpg
-https://farm9.staticflickr.com/8377/8530607381_22089fee7b_o.jpg
 https://farm9.staticflickr.com/8634/16030557831_09b92cca77_o.jpg
 https://farm9.staticflickr.com/8812/28860453752_3640e3ccd5_k.jpg
 https://fbcdn-sphotos-a-a.akamaihd.net/hphotos-ak-frc1/t1.0-9/1966935_10154025097980347_2026597123_n.jpg
@@ -17175,7 +17172,6 @@ https://i.redd.it/5hnlf03eg1o31.jpg
 https://i.redd.it/5hnqf1uqjhw21.jpg
 https://i.redd.it/5hqdk17z4zvz.jpg
 https://i.redd.it/5hudd9bna8i11.jpg
-https://i.redd.it/5hv4l3032bc01.jpg
 https://i.redd.it/5hvw1qwfr3l11.jpg
 https://i.redd.it/5hxtcmimx8v21.jpg
 https://i.redd.it/5i1ckt6oy0i31.jpg
@@ -20691,7 +20687,6 @@ https://i.redd.it/b00jxglxamk21.jpg
 https://i.redd.it/b01fljpsvh021.jpg
 https://i.redd.it/b01qfwqpsyu21.jpg
 https://i.redd.it/b04p0zj117o31.jpg
-https://i.redd.it/b04tmbh7vro31.jpg
 https://i.redd.it/b07dhtj954911.jpg
 https://i.redd.it/b07utoio1wk11.jpg
 https://i.redd.it/b094pygrdlg21.jpg
