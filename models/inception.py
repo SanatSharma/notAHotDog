@@ -59,7 +59,7 @@ def train_network(train_data, args):
 
 class Trained_Model:
     def __init__(self, model):
-        self.model = model
+        self.model = model.to(device)
     
     def evaluate(self, test_data):
         correct, nsfw_correct, false_positive, false_negative, total = 0,0,0,0,0

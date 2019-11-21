@@ -31,7 +31,8 @@ def main_handler(args):
             torch.save(model.state_dict(), args.model_path)
 
         else:
-            model = torch.load(args.model_path)
+            model = InceptionV3()
+            model.load_state_dict(torch.load(args.model_path))
             trained_model = Trained_Model(model)
 
         print("Evaluating")
