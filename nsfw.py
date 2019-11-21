@@ -14,7 +14,7 @@ def arg_parse():
     parser.add_argument('--batch_size', type=int, default=32, help='Batch size for training')
     parser.add_argument('--test_batch_size', type=int, default=8, help='Batch size for testing')
     parser.add_argument('--model_path', type=str, default="models/trained.pt", help='Path to save trained model')
-
+    parser.add_argument('--runtime', action='store_true',default=False,help="runtime environment or not")
     args = parser.parse_args()
     return args
 
@@ -24,18 +24,25 @@ def main_handler(args):
         train_data, test_data = create_nsfw_dataset(args.nsfw_path, args.neutral_data_path, args)
         print(len(train_data), len(test_data))
 
-        print("Training")
-        trained_model = train_network(train_data, args)
+        if not args.runtime:
+            print("Training")
+            trained_model = train_network(train_data, args)
+            model = trained_model.model
+            torch.save(model.state_dict(), args.model_path)
+
+        else:
+            model = torch.load(args.model_path)
+            trained_model = Trained_Model(model)
+
         print("Evaluating")
         trained_model.evaluate(test_data)
-        model = trained_model.model
-        
-        torch.save(model.state_dict(), args.model_path)
 
         # Print model's state_dict
+        '''
         print("Model's state_dict:")
         for param_tensor in model.state_dict():
                 print(param_tensor, "\t", model.state_dict()[param_tensor].size())
+        '''
 
 if __name__ == '__main__':
     args = arg_parse()
