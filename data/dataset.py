@@ -28,8 +28,11 @@ class NSFWDataset(Dataset):
         
         img = Image.open(self.indexer.get_object(idx))
         # If greyscale, convert to RGB
-        if img.getbands()[0] == 'P' or img.getbands()[0] == 'L' or img.getbands()[-1] == "A":
+        #if img.getbands()[0] == 'P' or img.getbands()[0] == 'L' or img.getbands()[-1] == "A":
             #print(img.getbands())
+        #    img = img.convert('RGB')
+        
+        if img.getbands() != ('R','G','B'):
             img = img.convert('RGB')
 
         # Transform to make every image the same size for the neural net
