@@ -1,3 +1,4 @@
+import sys
 import flask
 from flask_cors import CORS
 from torchvision import transforms, utils
@@ -36,6 +37,7 @@ def hello():
 if __name__ == '__main__':
     # This is used when running locally. Gunicorn is used to run the
     # application on Google App Engine. See entrypoint in app.yaml.
+    
     model_path = "data/trained.pt"
     model = InceptionV3()
     model.load_state_dict(torch.load(args.model_path))
