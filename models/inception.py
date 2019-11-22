@@ -86,3 +86,13 @@ class Trained_Model:
         print("Correctness", str(correct) + "/" + str(total) + ": " + str(round(correct/total, 5)))
         print("Precision nsfw", str(nsfw_correct) + "/" + str(false_positive + nsfw_correct) + ": " + str(round(nsfw_correct/(false_positive + nsfw_correct), 5)))
         print("Recall nsfw", str(nsfw_correct) + "/" + str(nsfw_correct + false_negative) + ": " + str(round(nsfw_correct/nsfw_correct + false_negative, 5)))
+
+    def runtime_api(self, data):
+        self.model.eval()
+        for idx, data in tqdm(enumerate(test_data), total=len(test_data)):
+            inputs, labels = data
+            inputs, labels = inputs.to(device), labels.type(torch.LongTensor).to(device)
+
+            probs = self.model.forward(inputs, train=False)
+
+            return probs
