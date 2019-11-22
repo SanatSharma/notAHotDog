@@ -60,6 +60,25 @@ class NSFWDataset(Dataset):
 
         return np.array(labels)
 
+class RuntimeDataset(Dataset):
+    def __init__(self, blobs):
+        self.transform = transforms.Compose(
+                            [transforms.RandomResizedCrop(299), 
+                            transforms.ToTensor(), 
+                            transforms.Normalize(mean=[0.485, 0.456, 0.406], 
+                                    std=[0.229, 0.224, 0.225])])
+        self.blobs = blobs
+
+    def __len__(self):
+        return len(self.blobs)
+    
+    def __getitem__(self, idx):
+        if torch.is_tensor(idx):
+            idx = idx.tolist()
+
+        img = Image.frombytes('RGB', (299,299), self.blobs[idx], 'raw')
+        img = self.transform(img)
+        return (img, 0)
         
 def create_nsfw_dataset(nsfw_path, neutral_path, args, test_split=.2, shuffle=True):
     
