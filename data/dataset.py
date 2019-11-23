@@ -75,8 +75,12 @@ class RuntimeDataset(Dataset):
     def __getitem__(self, idx):
         if torch.is_tensor(idx):
             idx = idx.tolist()
-
-        img = Image.frombytes('RGB', (299,299), self.blobs[idx], 'raw')
+        
+        blob = self.blobs[str(idx)].read()
+        img = Image.open(io.BytesIO(blob))
+        
+        if img.getbands() != ('R','G','B'):
+            img = img.convert('RGB')
         img = self.transform(img)
         return (img, 0)
         
