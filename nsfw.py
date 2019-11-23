@@ -15,6 +15,7 @@ def arg_parse():
     parser.add_argument('--test_batch_size', type=int, default=8, help='Batch size for testing')
     parser.add_argument('--model_path', type=str, default="models/trained.pt", help='Path to save trained model')
     parser.add_argument('--runtime', action='store_true',default=False,help="runtime environment or not")
+    parser.add_argument('--use_trained', type=str,default='',help="Pretrained model you want to use")
     args = parser.parse_args()
     return args
 
@@ -26,7 +27,17 @@ def main_handler(args):
 
         if not args.runtime:
             print("Training")
-            trained_model = train_network(train_data, args)
+            if args.use_trained != '':
+                model = InceptionV3()
+                if torch.cuda.is_available():
+                    model.load_state_dict(torch.load(args.use_trained))
+                else:
+                    model.load_state_dict(torch.load(args.use_trained, map_location='cpu'))
+
+                trained_model = train_network(train_data, args, model)
+            else:
+                trained_model = train_network(train_data, args)
+                
             model = trained_model.model
             torch.save(model.state_dict(), args.model_path)
 

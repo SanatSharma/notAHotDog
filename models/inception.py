@@ -29,8 +29,11 @@ class InceptionV3(nn.Module):
         probs = F.log_softmax(labels, dim=1)
         return probs
 
-def train_network(train_data, args):
-    model = InceptionV3().to(device)
+def train_network(train_data, args, model=None):
+    if model:
+        model = model
+    else:
+        model = InceptionV3().to(device)
     optimizer = Adam(model.parameters(), args.lr)
     loss_function = nn.NLLLoss()
     model.train()
