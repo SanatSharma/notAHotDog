@@ -32,7 +32,10 @@ def main_handler(args):
 
         else:
             model = InceptionV3()
-            model.load_state_dict(torch.load(args.model_path))
+            if torch.cuda.is_available():
+                model.load_state_dict(torch.load(args.model_path))
+            else:
+                model.load_state_dict(torch.load(args.model_path, map_location='cpu'))
             trained_model = Trained_Model(model)
 
         print("Evaluating")

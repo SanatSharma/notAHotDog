@@ -5,6 +5,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.optim import Adam
 from tqdm import tqdm
+import numpy as np
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
@@ -70,6 +71,7 @@ class Trained_Model:
             inputs, labels = inputs.to(device), labels.type(torch.LongTensor).to(device)
 
             probs = self.model.forward(inputs, train=False)
+            print(np.exp(probs.detach().numpy()))
             
             for i in range(len(probs)):
                 val = torch.argmax(probs[i]).item()
@@ -89,10 +91,10 @@ class Trained_Model:
 
     def runtime_api(self, data):
         self.model.eval()
-        for idx, data in tqdm(enumerate(test_data), total=len(test_data)):
-            inputs, labels = data
+        for idx, d in enumerate(data):
+            inputs, labels = d
             inputs, labels = inputs.to(device), labels.type(torch.LongTensor).to(device)
 
             probs = self.model.forward(inputs, train=False)
-
+            probs = np.exp(probs.detach().numpy())
             return probs
