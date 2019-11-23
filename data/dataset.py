@@ -6,6 +6,7 @@ from utils import *
 import numpy as np
 from PIL import Image
 import os
+import io
 
 class NSFWDataset(Dataset):
     def __init__(self, data_path_nsfw, data_path_neutral):

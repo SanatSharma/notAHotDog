@@ -45,7 +45,7 @@ if __name__ == '__main__':
     # This is used when running locally. Gunicorn is used to run the
     # application on Google App Engine. See entrypoint in app.yaml.
     args = arg_parse()
-    model_path = "models/trained.pt"
+    model_path = "models/trained_new.pt"
     model = InceptionV3()
     if torch.cuda.is_available():
         model.load_state_dict(torch.load(model_path))
@@ -53,4 +53,3 @@ if __name__ == '__main__':
         model.load_state_dict(torch.load(model_path, map_location='cpu'))
     trained_model = Trained_Model(model)
     app.run(host='127.0.0.1', port=args.port, debug=True)
-
